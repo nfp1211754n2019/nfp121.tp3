@@ -59,22 +59,24 @@ public class Pile4 implements PileI, Cloneable {
 	}
 
 	public void empiler(Object o) throws PilePleineException {
-		if (estPleine())
-			throw new PilePleineException();
-		// à compléter
+		if (estPleine())throw new PilePleineException();
+			Maillon first=new Maillon(o,stk);
+			stk=first;
+		nombre++;
+		
 	}
 
 	public Object depiler() throws PileVideException {
-		if (estVide())
-			throw new PileVideException();
-		// à compléter
-		return null;
+		if (estVide())throw new PileVideException();
+		Object o = stk.element();
+	        stk = stk.suivant();
+		nombre--;
+		return o;
 	}
 
 	public Object sommet() throws PileVideException {
-		if (estVide())
-			throw new PileVideException();
-		return null; // à compléter
+		if (estVide())throw new PileVideException();
+		return stk.element(); // à compléter
 	}
 
 	/**
@@ -83,7 +85,7 @@ public class Pile4 implements PileI, Cloneable {
 	 * @return vrai si la pile est vide, faux autrement
 	 */
 	public boolean estVide() {
-		return false; // à compléter
+		return stk==null; // à compléter
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class Pile4 implements PileI, Cloneable {
 	 * @return vrai si la pile est pleine, faux autrement
 	 */
 	public boolean estPleine() {
-		return false; // à compléter
+		return nombre == capacite; // à compléter
 	}
 
 	/**
@@ -102,18 +104,51 @@ public class Pile4 implements PileI, Cloneable {
 	 * @return une représentation en String d'une pile
 	 */
 	public String toString() {
-
-		String s = "[";
-		// à compléter
-		return s + "]";
+	    Maillon fixe=stk;
+	     StringBuffer string = new StringBuffer("[");
+	    while (stk != null){
+               Object element = stk.element();
+               if (element != null) {
+                string.append(element.toString());
+                 stk = stk.suivant();
+                  if(stk!=null)  string.append(", ");
+                }
+            }
+        stk = fixe;
+        string.append("]");
+        return string.toString();
 	}
 
 	public boolean equals(Object o) {
-		if (o instanceof Pile4) {
-			// à compléter
-			return false;
-		}
-		return false;
+		if(o == null){
+            return false;
+        }
+            boolean egale = false;
+        if (o instanceof Pile4) {
+            Pile4 p = (Pile4)o;
+            if( capacite() == p.capacite() && taille() == p.taille()){
+            egale =true ;
+        }
+            if (egale) {
+                Maillon thismaillon = stk;
+                Maillon othermaillon = p.stk;
+                 while (thismaillon != null && othermaillon != null){  
+                    Object elementpile1 = thismaillon.element();
+                    Object elementpile2 = othermaillon.element();
+                    if (elementpile1 != null) {
+                        egale &= elementpile1.equals(elementpile2);
+                    } else {
+                        egale = false;
+                    }                   
+                    if (!egale) {
+                       
+                        break;
+                    }
+                }
+            }
+        }
+        return egale;
+		
 	}
 
 	public int capacite() {

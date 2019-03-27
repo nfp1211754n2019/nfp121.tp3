@@ -33,6 +33,8 @@ public class Pile4Test extends junit.framework.TestCase {
 	/**
 	 * Constructeur de la classe-test Pile4Test
 	 */
+	private PileI p1;
+        private PileI p2;
 	public Pile4Test() {
 	}
 

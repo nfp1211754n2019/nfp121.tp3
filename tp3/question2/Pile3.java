@@ -12,60 +12,104 @@ import java.util.Vector;
  * @version (un numéro de version ou une date)
  */
 public class Pile3 implements PileI {
+    
 
 	private Vector<Object> v;
-
+        private int capacite;
 	public Pile3() {
-		this(0);
+		this(CAPACITE_PAR_DEFAUT);
 	}
 
 	public Pile3(int taille) {
-		// traiter le cas <=0
-		// à compléter
+		if (taille <= 0) {
+            taille = PileI.CAPACITE_PAR_DEFAUT; 
+    }
+        capacite = taille;
+            v = new Vector <Object>();
+    
 	}
 
 	public void empiler(Object o) throws PilePleineException {
-		// à compléter
+        if (o == null) throw new IllegalArgumentException("null inserted");
+        if (estPleine())  throw new PilePleineException(); 
+        v.addElement(o);
 	}
 
 	public Object depiler() throws PileVideException {
-		// à compléter
-		return null;
+	     Object last = sommet();
+             v.remove(last);
+              return last;
 	}
 
 	public Object sommet() throws PileVideException {
-		// à compléter
-		return null;
+           if (estVide()) throw new PileVideException();
+           return v.lastElement() ;
 	}
 
 	public int taille() {
 		// à compléter
-		return -1;
+		 return v.size();
 	}
 
 	public int capacite() {
 		// à compléter
-		return -1;
+		return v.capacity();
 	}
 
 	public boolean estVide() {
 		// à compléter
-		return false;
+		 return v.isEmpty();
 	}
 
 	public boolean estPleine() {
 		// à compléter
-		return false;
+		return v.size() == v.capacity();
 	}
 
 	public String toString() {
 		// à compléter
-		return "";
+		StringBuffer string = new StringBuffer("[");
+           for (int i = 0; i <v.size() - 1; i++) {
+            Object element = v.elementAt(i);
+            if (element != null) {
+                string.append(element.toString());
+                    string.append(", ");
+                }
+            }
+        
+        string.append("]");
+        return string.toString();
 	}
 
 	public boolean equals(Object o) {
-		// à compléter
-		return false;
+	if(o == null){
+            return false;
+        }
+            boolean egale = false;
+             Pile3 p = (Pile3)o;
+        if (o instanceof Pile3) {
+            
+            if( capacite() == p.capacite() && taille() == p.taille()){
+            egale =true ;
+        }
+            if (egale) {
+                for (int i = 0; i <v.size() - 1; i++) {
+                    
+                    Object elementpile1 = this.v.elementAt(i);
+                    Object elementpile2 = p.v.elementAt(i);
+                    if (elementpile1 != null) {
+                        egale &= elementpile1.equals(elementpile2);
+                    } else {
+                        egale = false;
+                    }                   
+                    if (!egale) {
+                       
+                        break;
+                    }
+                }
+            }
+        }
+        return egale;
 	}
 
 	// fonction fournie

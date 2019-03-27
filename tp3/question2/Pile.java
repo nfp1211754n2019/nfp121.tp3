@@ -15,51 +15,90 @@ public class Pile implements PileI {
     private int ptr;
 
     public Pile(int taille) {
-        // traiter le cas <=0
-        // a completer
+        if(taille <= 0) {
+            taille = CAPACITE_PAR_DEFAUT;
+        }
+        this.zone = new Object[taille];
+        this.ptr = 0;
+
     }
 
     public Pile() {
-        this(0);
+        this(CAPACITE_PAR_DEFAUT);
     }
 
     public void empiler(Object o) throws PilePleineException {
-        // a completer
-    }
+          if (estPleine()){
+            throw new PilePleineException();
+        }
+           this.zone[this.ptr] = o;
+            this.ptr++;    }
 
     public Object depiler() throws PileVideException {
-        // a completer
-        return null;
+        if (estVide()){
+            throw new PileVideException();
+        }
+        this.ptr--;
+        return zone[ptr];
+        
     }
 
     public Object sommet() throws PileVideException {
-        // a completer
-        return null;
+          if(estVide()){
+            throw new PileVideException();
+        }
+        return zone[ptr-1];
+       
     }
 
     public int capacite() {
-        // a completer
-        return -1;
+        return zone.length;
+        
     }
 
     public int taille() {
-        // a completer
-        return -1;
+        return ptr;
     }
 
     public boolean estVide() {
         // a completer
-        return false;
+        return ptr == 0;
     }
 
     public boolean estPleine() {
         // a completer
-        return false;
+        return ptr == zone.length;
     }
 
     public boolean equals(Object o) {
         // a completer
-        return false;
+        if(o == null){
+            return false;
+        }
+        boolean egale = false;
+        if (o instanceof Pile) {
+            Pile p = (Pile)o;
+            if( capacite() == p.capacite() && taille() == p.taille()){
+            egale =true ;
+        }
+            if (egale) {
+                for (int i = 0; i <ptr - 1; i++) {
+                    
+                    Object elementpile1 = zone[i];
+                    Object elementpile2 = p.zone[i];
+                    if (elementpile1 != null) {
+                        egale &= elementpile1.equals(elementpile2);
+                    } else {
+                        egale = false;
+                    }                   
+                    if (!egale) {
+                       
+                        break;
+                    }
+                }
+            }
+        }
+        return egale;
     }
 
     // fonction fournie
@@ -68,7 +107,16 @@ public class Pile implements PileI {
     }
 
     public String toString() {
-        // a completer
-        return null;
+       StringBuffer string = new StringBuffer("[");
+        for (int i = 0; i <ptr - 1; i++) {
+            Object element = zone[i];
+            if (element != null) {
+                string.append(element.toString()); 
+                    string.append(", ");
+
+            }
+        }
+        string.append("]");
+        return string.toString();
     }
-}
+    }
